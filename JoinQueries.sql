@@ -1,1 +1,12 @@
-select * from monarchs;
+SELECT
+	*
+FROM
+	MONARCHS;
+
+-- Join query with using clause
+SELECT
+	PR.PRESIDENT,
+	PM.PRIME_MINISTER
+FROM
+	PRESIDENTS AS PR
+	INNER JOIN PRIME_MINISTERS AS PM USING (COUNTRY)
