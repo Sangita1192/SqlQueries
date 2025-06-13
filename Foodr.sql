@@ -10,5 +10,13 @@ GROUP BY
 ORDER BY
 	ORDER_ID
 
-
+-- Calculating Cost
+SELECT 
+	meal_id,
+	SUM (meal_cost * stocked_quantity) AS total_cost
+FROM 
+	meals
+JOIN stock USING (meal_id)
+GROUP BY meal_id
+ORDER BY total_cost DESC
 
