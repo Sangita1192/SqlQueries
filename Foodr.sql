@@ -92,7 +92,7 @@ GROUP BY USER_ID
 ORDER BY USER_ID
 LIMIT 3;
 
--- User Registration as per months
+-- User Registrations as per month
 WITH
 	REG_USERS AS (
 		SELECT
@@ -112,4 +112,19 @@ GROUP BY
 	FOODR_MONTH
 	ORDER BY
 	FOODR_MONTH ASC
+
+
+-- Active Users (Monthly)
+SELECT
+	DATE_TRUNC('month', ORDER_DATE)::DATE AS FOODR_MONTH,
+	COUNT(DISTINCT USER_ID) AS MAU
+FROM
+	ORDERS
+GROUP BY
+	FOODR_MONTH
+ORDER BY
+	FOODR_MONTH
+
+
+
 
