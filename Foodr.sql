@@ -381,6 +381,27 @@ FROM
 GROUP BY
 	PRICE_CATEGORY
 
+-- Revenue bucketing using CASE
+WITH user_revenues AS (
+	SELECT user_id,
+		SUM(meal_price * order_quantity) AS revenue
+	fRom meals as m
+	JOIN orders as o 
+	on m.meal_id = o.meal_id
+	group by user_id
+)
+SELECT 
+	CASE 
+		WHEN revenue < 150 THEN 'Low-revenue users'
+		WHEN revenue < 300 THEN 'Mid-revenue users'
+		ELSE 'High-revenue users'
+	END AS revenue_group,
+	COUNT (DISTINCT user_id) AS users
+FROM
+	user_revenues
+GROUP BY revenue_group
+
+
 
 
 
