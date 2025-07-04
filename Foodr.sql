@@ -169,6 +169,37 @@ ORDER BY FOODR_MONTH ASC
 LIMIT 3;
 
 
+-- Deltas-query (finding difference of monthly active users)
+	
+WITH
+	MAUS AS (
+		SELECT
+			DATE_TRUNC('month', ORDER_DATE)::DATE AS FOODR_MONTH,
+			COUNT(DISTINCT USER_ID) AS MAU
+		FROM
+			ORDERS
+		GROUP BY
+			FOODR_MONTH
+	),
+	MAUS_LAG AS (
+		SELECT
+			FOODR_MONTH,
+			MAU,
+			COALESCE(
+				LAG(MAU) OVER (
+					ORDER BY
+						FOODR_MONTH ASC
+				),
+				1
+			) AS LAST_MAU
+		FROM
+			MAUS
+	)
+SELECT
+	FOODR_MONTH,
+	MAU,
+	(MAU - LAST_MAU) AS MAU_DELTA
+FROM	MAUS_LAG
 		
 
 
