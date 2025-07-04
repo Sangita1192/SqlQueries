@@ -298,8 +298,34 @@ FROM
 	MONTHLY_REVENUES ORDERBY
 	DELIVERY_MONTH ASC;
 	
+-- Query II (per user then average):
+WITH
+	USER_REVENUES AS (
+		SELECT
+			USER_ID,
+			SUM(MEAL_PRICE * ORDER_QUANTITY) AS REVENUE
+		FROM
+			MEALS
+			JOIN ORDERS ON MEALS.MEAL_ID = ORDERS.MEAL_ID
+		GROUP BY
+			USER_ID
+	)
+SELECT
+	ROUND(AVG(REVENUE)::NUMERIC, 2) AS ARPU
+FROM
+	USER_REVENUES;
 	
-	
+-- HISTOGRAMS
+
+-- 1) Orders per user:
+WITH user_orders AS(
+	SELECT
+		user_id,
+		COUNT(distinct order_id) AS num_of_orders
+	FROM orders
+	GROUP BY user_id
+	ORDER BY user_id
+)
 
 
 
