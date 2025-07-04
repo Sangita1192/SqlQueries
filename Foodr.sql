@@ -401,6 +401,24 @@ FROM
 	user_revenues
 GROUP BY revenue_group
 
+-- PERCENTILE AND QUARTILES
+
+-- percentile and average orders per user:
+WITH user_orders AS ( 
+	SELECT 
+	    user_id, 
+	    COUNT(DISTINCT order_id) AS orders 
+	  FROM orders 
+	  GROUP BY user_id
+  )
+SELECT
+	ROUND(PERCENTILE_CONT(0.25) WITHIN GROUP(ORDER BY orders)::NUMERIC, 2) AS orders_p25,
+	ROUND(PERCENTILE_CONT(0.50) WITHIN GROUP(ORDER BY orders)::NUMERIC,2) AS orders_p50,
+	ROUND(PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY orders):: NUMERIC,2) AS orders_p75,
+	ROUND(AVG(orders)::NUMERIC,2) AS avg_orders
+FROM
+	user_orders
+	
 
 
 
