@@ -368,7 +368,18 @@ GROUP BY ORDERS
 ORDER BY ORDERS DESC
 LIMIT 5;
 
-
+-- meal price bucketing using CASE:
+SELECT
+	CASE
+		WHEN MEAL_PRICE < 4 THEN 'Low-price-meal'
+		WHEN MEAL_PRICE < 6 THEN 'Mid-price-meal'
+		ELSE 'High-price meal'
+	END AS PRICE_CATEGORY,
+	COUNT(DISTINCT MEAL_ID)
+FROM
+	MEALS
+GROUP BY
+	PRICE_CATEGORY
 
 
 
